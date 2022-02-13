@@ -1,14 +1,16 @@
 <template>
   <div class="home">
-    <h1>HOMEE</h1>
+    <Header />
   </div>
 </template>
 
 <script>
 import SocketioService from "@/services/socketio.service";
+import Header from "@/components/Header";
 
 export default {
   name: "Home",
+  components: { Header },
   data() {
     return {
       tagId: "",
