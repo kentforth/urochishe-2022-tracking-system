@@ -1,16 +1,12 @@
 <template>
-  <div class="home">
-    <Header />
-  </div>
+  <div class="home">Home</div>
 </template>
 
 <script>
 import SocketioService from "@/services/socketio.service";
-import Header from "@/components/Header";
 
 export default {
   name: "Home",
-  components: { Header },
   data() {
     return {
       tagId: "",
@@ -21,7 +17,6 @@ export default {
     getSocketMessage() {
       SocketioService.socket.on("bicycleNumber", (data) => {
         this.tagId = data;
-        console.log(this.tagId);
       });
     },
   },

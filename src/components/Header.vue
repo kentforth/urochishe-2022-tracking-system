@@ -12,15 +12,17 @@ export default {
 
 <style scoped lang="scss">
 .header {
-  height: 50px;
+  height: 60px;
   width: 100%;
   background-color: $dark-blue;
   -webkit-box-shadow: 2px 6px 15px -5px #000000;
   box-shadow: 2px 6px 15px -5px #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   h1 {
     color: $white;
-    text-align: center;
   }
 }
 </style>
