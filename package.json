@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
+    "core-js": "^3.21.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "serialport": "^9.2.8",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.4.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },
@@ -22,9 +27,9 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^6.0.0",
+    "sass-loader": "^10",
     "prettier": "^2.2.1",
-    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   }
 }

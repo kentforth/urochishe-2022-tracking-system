@@ -1,18 +1,36 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <h1>HOMEE</h1>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import SocketioService from "@/services/socketio.service";
 
 export default {
   name: "Home",
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      tagId: "",
+    };
+  },
+
+  methods: {
+    getSocketMessage() {
+      SocketioService.socket.on("bicycleNumber", (data) => {
+        this.tagId = data;
+        console.log(this.tagId);
+      });
+    },
+  },
+
+  created() {
+    SocketioService.setupSocketConnection();
+    this.getSocketMessage();
+  },
+  beforeDestroy() {
+    SocketioService.disconnect();
   },
 };
 </script>
+<style lang="scss"></style>

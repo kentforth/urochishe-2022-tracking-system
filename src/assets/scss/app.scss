@@ -1,0 +1,59 @@
+@import "variables";
+
+//Global Styles
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Bahnschrift', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+p {
+  font-size: 16px;
+}
+
+
+.container {
+  margin: 0 auto;
+  width: 90%;
+}
