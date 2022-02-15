@@ -12,6 +12,7 @@
         icon-name="plus-circle.png"
         @click="showModal"
       />
+      <ExcelButton :data="allRacers" />
     </div>
 
     <RacersTable :table-data="allRacers" />
@@ -69,10 +70,11 @@ import SocketioService from "@/services/socketio.service";
 import CustomButton from "@/components/UI/CustomButton";
 import Modal from "@/components/UI/Modal";
 import RacersTable from "@/components/pages/racers/RacersTable";
+import ExcelButton from "@/components/UI/ExcelButton";
 
 export default {
   name: "Racers",
-  components: { RacersTable, Modal, CustomButton },
+  components: { ExcelButton, RacersTable, Modal, CustomButton },
   data() {
     return {
       tagId: "",
@@ -103,12 +105,13 @@ export default {
 
     addRacer() {
       const racers = JSON.parse(localStorage.getItem("racers"));
+      const form = JSON.parse(JSON.stringify(this.form));
       if (racers && racers.length) {
         this.racers = racers;
-        this.racers.push(this.form);
+        this.racers.push(form);
         localStorage.setItem("racers", JSON.stringify(this.racers));
       } else {
-        this.racers.push(this.form);
+        this.racers.push(form);
         localStorage.setItem("racers", JSON.stringify(this.racers));
       }
     },
@@ -162,8 +165,12 @@ h1 {
 }
 
 .buttons {
-  display: flex;
-  margin-top: 10px;
+  display: grid;
+  width: max-content;
+  height: max-content;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  margin: 10px auto;
   justify-content: center;
   padding: 0 20px;
 }

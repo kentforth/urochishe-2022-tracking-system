@@ -2,9 +2,15 @@
   <nav class="navigation">
     <ul>
       <li>
+        <router-link to="/tracking">
+          <span>Трекинг</span>
+          <img src="icons/clock.png" alt="tracking" />
+        </router-link>
+      </li>
+      <li>
         <router-link to="/racers">
           <span>Участники</span>
-          <img src="icons/bicycle.png" alt="" />
+          <img src="icons/bicycle.png" alt="bicycle" />
         </router-link>
       </li>
     </ul>
@@ -41,7 +47,7 @@ export default {
     align-items: center;
 
     img {
-      width: 30px;
+      height: 20px;
       margin-left: 10px;
     }
   }

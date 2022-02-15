@@ -62,12 +62,12 @@ export default {
   margin: 30px auto 0 auto;
   border-radius: 6px;
   border: 1px solid $grey;
+  box-shadow: 0 4px 27px 3px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 
   &__header {
     background-color: $deep-blue;
     display: flex;
-    justify-content: space-between;
   }
 
   &__column {
@@ -83,6 +83,7 @@ export default {
 
   &__body {
     width: 100%;
+    max-height: 550px;
     overflow-y: auto;
     display: flex;
     justify-content: space-between;
