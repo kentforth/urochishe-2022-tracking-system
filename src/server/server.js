@@ -30,5 +30,7 @@ server.listen(serverPort, hostname, function () {
 });
 
 parser.on("data", function (data) {
-  io.emit("bicycleNumber", data);
+  if (data.length === 7) {
+    io.emit("bicycleNumber", data);
+  }
 });

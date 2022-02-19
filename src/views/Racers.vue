@@ -13,6 +13,12 @@
         @click="showModal"
       />
       <ExcelButton :data="allRacers" />
+      <CustomButton
+        text="Удалить всех"
+        :has-icon="false"
+        class="btn-delete"
+        @click="deleteAllRacers"
+      />
     </div>
 
     <RacersTable :table-data="allRacers" />
@@ -97,9 +103,7 @@ export default {
   methods: {
     getSocketMessage() {
       SocketioService.socket.on("bicycleNumber", (data) => {
-        if (data.length === 7) {
-          this.tagId = data;
-        }
+        this.tagId = data;
       });
     },
 
@@ -136,13 +140,16 @@ export default {
         this.$refs.modal.isVisible = false;
       }
     },
+
+    deleteAllRacers() {
+      localStorage.removeItem("racers");
+      this.racers = [];
+    },
   },
 
-  created() {
+  mounted() {
     SocketioService.setupSocketConnection();
     this.getSocketMessage();
-  },
-  mounted() {
     const racers = JSON.parse(localStorage.getItem("racers"));
     if (racers && racers.length) {
       this.racers = racers;
@@ -165,10 +172,10 @@ h1 {
 }
 
 .buttons {
-  display: grid;
+  display: flex;
   width: max-content;
   height: max-content;
-  grid-template-columns: repeat(2, 1fr);
+
   grid-gap: 20px;
   margin: 10px auto;
   justify-content: center;
@@ -194,5 +201,10 @@ h1 {
   width: max-content;
   margin: 0 auto;
   background-color: $orange;
+}
+
+.btn-delete {
+  width: max-content;
+  background-color: $red;
 }
 </style>

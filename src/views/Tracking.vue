@@ -1,46 +1,185 @@
 <template>
   <div>
+    <!--TIMER-->
     <div class="timer">
-      <h1>Timer</h1>
+      <Timer ref="timer" />
+      <CustomButton
+        text="Старт"
+        :has-icon="false"
+        class="btn-start"
+        @click="startRace"
+      />
+      <CustomButton
+        text="Стоп"
+        :has-icon="false"
+        class="btn-stop"
+        @click="stopRace"
+      />
+    </div>
+
+    <!--TRACKING-->
+    <div class="tracking">
+      <div class="tracking__header">
+        <div v-for="title in trackingHeaders" :key="title.title">
+          {{ title.title }}
+        </div>
+      </div>
+      <div class="tracking__item" v-for="racer in raceData" :key="racer.tagId">
+        <div>{{ racer.name }}</div>
+        <div class="tracking__time">{{ racer.time }}</div>
+        <div>{{ racer.number }}</div>
+        <div>{{ racer.category }}</div>
+        <div>{{ racer.tagId }}</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import SocketioService from "@/services/socketio.service";
+import CustomButton from "@/components/UI/CustomButton";
+import Timer from "@/components/pages/tracking/Timer";
 
 export default {
   name: "Tracking",
+  components: { Timer, CustomButton },
   data() {
     return {
       tagId: "",
+      raceData: [],
+      finishedTags: [],
+      trackingHeaders: [
+        { title: "ФИО" },
+        { title: "Время" },
+        { title: "Номер" },
+        { title: "Категория" },
+        { title: "Идентификатор метки" },
+      ],
     };
   },
-  methods: {
-    getSocketMessage() {
-      SocketioService.socket.on("bicycleNumber", (data) => {
-        this.tagId = data;
-      });
-    },
-  },
 
-  created() {
+  mounted() {
+    const finishedRacers = JSON.parse(localStorage.getItem("finishedRacers"));
+    if (finishedRacers) {
+      this.raceData = finishedRacers;
+    }
     SocketioService.setupSocketConnection();
     this.getSocketMessage();
   },
   beforeDestroy() {
     SocketioService.disconnect();
   },
+
+  methods: {
+    getSocketMessage() {
+      SocketioService.socket.on("bicycleNumber", (data) => {
+        this.tagId = data;
+        try {
+          const starting = JSON.parse(localStorage.getItem("isStarting"));
+          if (starting) {
+            this.isStarting = starting;
+          }
+          if (this.isStarting) {
+            this.findRacer();
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    },
+
+    findRacer() {
+      const racers = JSON.parse(localStorage.getItem("racers"));
+      if (racers) {
+        const racer = racers.find((x) => x.tagId === this.tagId);
+        if (racer) {
+          racer.time = this.getTrackingTime();
+          if (!this.raceData.some((e) => e.tagId === this.tagId)) {
+            this.addRacer(racer);
+          }
+        }
+      }
+    },
+
+    addRacer(racer) {
+      this.finishedTags.push(this.tagId);
+      this.raceData.push(racer);
+      localStorage.setItem("finishedRacers", JSON.stringify(this.raceData));
+    },
+
+    getTrackingTime() {
+      const hours = this.$refs.timer.parsedHours;
+      const minutes = this.$refs.timer.parsedMinutes;
+      const seconds = this.$refs.timer.parsedSeconds;
+      return `${hours}:${minutes}:${seconds}`;
+    },
+
+    startRace() {
+      localStorage.setItem("isStarting", "true");
+      this.$refs.timer.startRace();
+    },
+
+    stopRace() {
+      this.$refs.timer.stopRace();
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
-h1 {
-  font-size: 70px;
-  text-align: center;
-  font-family: "Righteous", sans-serif;
-  font-weight: 900;
-  line-height: 56px;
-  margin-top: 20px;
+.timer {
+  width: 100%;
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+
+  .btn-start,
+  .btn-stop {
+    justify-self: flex-end;
+    height: max-content;
+    margin-left: 50px;
+    font-size: 30px;
+    background-color: $green;
+  }
+
+  .btn-stop {
+    background-color: $red;
+  }
+}
+
+.tracking {
+  width: 95%;
+  margin: 0 auto;
+
+  &__header {
+    width: 100%;
+    background-color: $deep-blue;
+    display: flex;
+    color: $white;
+    font-weight: 600;
+    padding: 10px;
+
+    div {
+      width: 250px;
+    }
+  }
+  &__item {
+    border-bottom: 1px solid $grey;
+    padding: 10px 10px 5px 10px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+
+    div {
+      width: 250px;
+      margin-right: 50px;
+    }
+  }
+
+  &__time {
+    color: $green;
+    font-weight: 600;
+  }
 }
 </style>
