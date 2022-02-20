@@ -17,6 +17,19 @@
       />
     </div>
 
+    <div class="temp">
+      <div class="temp__items">
+        <div v-for="tag in finishedTags" :key="tag">
+          {{ tag }}
+        </div>
+      </div>
+
+      <div v-if="hasSame" style="color: #2bca20; font-weight: 700">
+        {{ hasSame }}
+      </div>
+      <div v-else style="color: #ca2c2e; font-weight: 700">{{ hasSame }}</div>
+    </div>
+
     <!--TRACKING-->
     <div class="tracking">
       <div class="tracking__header">
@@ -45,6 +58,7 @@ export default {
   components: { Timer, CustomButton },
   data() {
     return {
+      hasSame: false,
       tagId: "",
       raceData: [],
       finishedTags: [],
@@ -96,13 +110,16 @@ export default {
           racer.time = this.getTrackingTime();
           if (!this.raceData.some((e) => e.tagId === this.tagId)) {
             this.addRacer(racer);
+            this.hasSame = false;
+          } else {
+            this.hasSame = true;
           }
         }
       }
     },
 
     addRacer(racer) {
-      this.finishedTags.push(this.tagId);
+      this.finishedTags.push(racer.number);
       this.raceData.push(racer);
       localStorage.setItem("finishedRacers", JSON.stringify(this.raceData));
     },
@@ -145,6 +162,16 @@ export default {
 
   .btn-stop {
     background-color: $red;
+  }
+}
+
+.temp {
+  margin: 30px;
+
+  &__items {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
   }
 }
 
