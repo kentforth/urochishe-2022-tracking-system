@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
+    "nodemon": "nodemon ./src/server/server.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@serialport/parser-delimiter": "^10.3.0",
+    "@serialport/parser-readline": "^10.3.0",
     "core-js": "^3.21.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "express": "^4.17.2",
     "serialport": "^9.2.8",
     "socket.io": "^4.4.1",
